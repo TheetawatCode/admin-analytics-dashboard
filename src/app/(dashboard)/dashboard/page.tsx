@@ -1,47 +1,67 @@
+import { RevenueChart } from "@/components/dashboard/revenue-chart"
+import { StatCard } from "@/components/dashboard/stat-card"
+import { revenueData } from "@/constants/dashboard-data"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { prisma } from "@/lib/prisma"
 import {
   DollarSign,
   Package,
   ShoppingCart,
   Users,
 } from "lucide-react"
-import { StatCard } from "@/components/dashboard/stat-card"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-const stats = [
-  {
-    title: "Total Revenue",
-    value: "$24,500",
-    change: "+12.5% from last month",
-    icon: DollarSign,
-  },
-  {
-    title: "Total Orders",
-    value: "1,248",
-    change: "+8.2% from last month",
-    icon: ShoppingCart,
-  },
-  {
-    title: "Total Customers",
-    value: "892",
-    change: "+5.4% from last month",
-    icon: Users,
-  },
-  {
-    title: "Active Products",
-    value: "128",
-    change: "+3 new this week",
-    icon: Package,
-  },
-]
+export default async function DashboardPage() {
+  const [revenueResult, totalOrders, totalCustomers, totalProducts, recentOrders] =
+    await Promise.all([
+      prisma.order.aggregate({
+        _sum: {
+          totalAmount: true,
+        },
+      }),
+      prisma.order.count(),
+      prisma.customer.count(),
+      prisma.product.count(),
+      prisma.order.findMany({
+        take: 5,
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          customer: true,
+        },
+      }),
+    ])
 
-const recentOrders = [
-  { id: "#ORD-1001", customer: "John Carter", amount: "$240.00", status: "Paid" },
-  { id: "#ORD-1002", customer: "Sarah Kim", amount: "$125.00", status: "Pending" },
-  { id: "#ORD-1003", customer: "Michael Lee", amount: "$560.00", status: "Completed" },
-  { id: "#ORD-1004", customer: "Emma Wilson", amount: "$89.00", status: "Paid" },
-]
+  const totalRevenue = revenueResult._sum.totalAmount ?? 0
+  const averageOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0
 
-export default function DashboardPage() {
+  const stats = [
+    {
+      title: "Total Revenue",
+      value: `$${totalRevenue.toLocaleString()}`,
+      change: "Live data from PostgreSQL",
+      icon: DollarSign,
+    },
+    {
+      title: "Total Orders",
+      value: totalOrders.toLocaleString(),
+      change: "Live data from PostgreSQL",
+      icon: ShoppingCart,
+    },
+    {
+      title: "Total Customers",
+      value: totalCustomers.toLocaleString(),
+      change: "Live data from PostgreSQL",
+      icon: Users,
+    },
+    {
+      title: "Active Products",
+      value: totalProducts.toLocaleString(),
+      change: "Live data from PostgreSQL",
+      icon: Package,
+    },
+  ]
+
   return (
     <div className="space-y-6">
       <div>
@@ -69,9 +89,7 @@ export default function DashboardPage() {
             <CardTitle>Revenue Overview</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex h-[320px] items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
-              Revenue chart will be added in the next step
-            </div>
+            <RevenueChart data={revenueData} />
           </CardContent>
         </Card>
 
@@ -92,7 +110,9 @@ export default function DashboardPage() {
 
             <div className="rounded-lg border p-4">
               <p className="text-sm text-muted-foreground">Avg. Order Value</p>
-              <p className="mt-1 text-2xl font-bold">$96.40</p>
+              <p className="mt-1 text-2xl font-bold">
+                ${averageOrderValue.toFixed(2)}
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -117,9 +137,13 @@ export default function DashboardPage() {
                 <tbody>
                   {recentOrders.map((order) => (
                     <tr key={order.id} className="border-b last:border-0">
-                      <td className="px-4 py-3 font-medium">{order.id}</td>
-                      <td className="px-4 py-3">{order.customer}</td>
-                      <td className="px-4 py-3">{order.amount}</td>
+                      <td className="px-4 py-3 font-medium">
+                        {order.id.slice(0, 8)}
+                      </td>
+                      <td className="px-4 py-3">{order.customer.name}</td>
+                      <td className="px-4 py-3">
+                        ${order.totalAmount.toFixed(2)}
+                      </td>
                       <td className="px-4 py-3">{order.status}</td>
                     </tr>
                   ))}
