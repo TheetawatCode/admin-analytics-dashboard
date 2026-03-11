@@ -1,63 +1,53 @@
 import { RevenueChart } from "@/components/dashboard/revenue-chart"
 import { StatCard } from "@/components/dashboard/stat-card"
+import { OrderStatusBadge } from "@/components/dashboard/order-status-badge"
 import { revenueData } from "@/constants/dashboard-data"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { prisma } from "@/lib/prisma"
 import {
   DollarSign,
   Package,
   ShoppingCart,
   Users,
 } from "lucide-react"
-import { OrderStatusBadge } from "@/components/dashboard/order-status-badge"
+
+async function getDashboardData() {
+  const res = await fetch("http://localhost:3000/api/dashboard/stats", {
+    cache: "no-store",
+  })
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch dashboard data")
+  }
+
+  return res.json()
+}
 
 export default async function DashboardPage() {
-  const [revenueResult, totalOrders, totalCustomers, totalProducts, recentOrders] =
-    await Promise.all([
-      prisma.order.aggregate({
-        _sum: {
-          totalAmount: true,
-        },
-      }),
-      prisma.order.count(),
-      prisma.customer.count(),
-      prisma.product.count(),
-      prisma.order.findMany({
-        take: 5,
-        orderBy: {
-          createdAt: "desc",
-        },
-        include: {
-          customer: true,
-        },
-      }),
-    ])
+  const response = await getDashboardData()
+  const { stats, recentOrders } = response.data
 
-  const totalRevenue = revenueResult._sum.totalAmount ?? 0
-  const averageOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0
-
-  const stats = [
+  const cards = [
     {
       title: "Total Revenue",
-      value: `$${totalRevenue.toLocaleString()}`,
+      value: `$${stats.totalRevenue.toLocaleString()}`,
       change: "Live data from PostgreSQL",
       icon: DollarSign,
     },
     {
       title: "Total Orders",
-      value: totalOrders.toLocaleString(),
+      value: stats.totalOrders.toLocaleString(),
       change: "Live data from PostgreSQL",
       icon: ShoppingCart,
     },
     {
       title: "Total Customers",
-      value: totalCustomers.toLocaleString(),
+      value: stats.totalCustomers.toLocaleString(),
       change: "Live data from PostgreSQL",
       icon: Users,
     },
     {
       title: "Active Products",
-      value: totalProducts.toLocaleString(),
+      value: stats.totalProducts.toLocaleString(),
       change: "Live data from PostgreSQL",
       icon: Package,
     },
@@ -73,7 +63,7 @@ export default async function DashboardPage() {
       </div>
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {stats.map((stat) => (
+        {cards.map((stat) => (
           <StatCard
             key={stat.title}
             title={stat.title}
@@ -112,7 +102,7 @@ export default async function DashboardPage() {
             <div className="rounded-lg border p-4">
               <p className="text-sm text-muted-foreground">Avg. Order Value</p>
               <p className="mt-1 text-2xl font-bold">
-                ${averageOrderValue.toFixed(2)}
+                ${stats.averageOrderValue.toFixed(2)}
               </p>
             </div>
           </CardContent>
@@ -136,12 +126,15 @@ export default async function DashboardPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {recentOrders.map((order) => (
-                    <tr key={order.id} className="border-b last:border-0">
+                  {recentOrders.map((order: any) => (
+                    <tr
+                      key={order.id}
+                      className="border-b transition-colors hover:bg-muted/40 last:border-0"
+                    >
                       <td className="px-4 py-3 font-medium">
-                        {order.id.slice(0, 8)}
+                        #{order.id.slice(0, 6).toUpperCase()}
                       </td>
-                      <td className="px-4 py-3">{order.customer.name}</td>
+                      <td className="px-4 py-3">{order.customerName}</td>
                       <td className="px-4 py-3">
                         ${order.totalAmount.toFixed(2)}
                       </td>
