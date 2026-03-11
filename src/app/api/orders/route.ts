@@ -7,10 +7,12 @@ export async function GET(request: NextRequest) {
 
     const page = Number(searchParams.get("page") ?? "1")
     const limit = Number(searchParams.get("limit") ?? "10")
+    const search = searchParams.get("search") ?? ""
 
     const data = await getOrders({
       page,
       limit,
+      search,
     })
 
     return NextResponse.json({

@@ -3,10 +3,11 @@ import { getOrdersFromDb } from "@/server/repositories/orders.repository"
 type GetOrdersParams = {
   page: number
   limit: number
+  search?: string
 }
 
-export async function getOrders({ page, limit }: GetOrdersParams) {
-  const result = await getOrdersFromDb({ page, limit })
+export async function getOrders({ page, limit, search }: GetOrdersParams) {
+  const result = await getOrdersFromDb({ page, limit, search })
 
   return {
     ...result,
