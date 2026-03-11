@@ -14,7 +14,7 @@ type OrdersPageProps = {
 async function getOrders(page = 1, search = "") {
   const params = new URLSearchParams({
     page: String(page),
-    limit: "2",
+    limit: "4",
   })
 
   if (search) {

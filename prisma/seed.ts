@@ -29,6 +29,14 @@ async function main() {
       { name: "Michael Lee", email: "michael.lee@example.com" },
       { name: "Emma Wilson", email: "emma.wilson@example.com" },
       { name: "David Chen", email: "david.chen@example.com" },
+  
+      { name: "Olivia Martinez", email: "olivia.martinez@example.com" },
+      { name: "Daniel Brown", email: "daniel.brown@example.com" },
+      { name: "Sophia Davis", email: "sophia.davis@example.com" },
+      { name: "James Anderson", email: "james.anderson@example.com" },
+      { name: "Isabella Taylor", email: "isabella.taylor@example.com" },
+      { name: "William Thomas", email: "william.thomas@example.com" },
+      { name: "Mia White", email: "mia.white@example.com" },
     ],
   })
 
@@ -81,6 +89,38 @@ async function main() {
       status: OrderStatus.PAID,
       totalAmount: 89,
     },
+  }) 
+
+  const order5 = await prisma.order.create({
+    data: {
+      customerId: createdCustomers[4].id,
+      status: OrderStatus.COMPLETED,
+      totalAmount: 340,
+    },
+  })
+  
+  const order6 = await prisma.order.create({
+    data: {
+      customerId: createdCustomers[5].id,
+      status: OrderStatus.PENDING,
+      totalAmount: 75,
+    },
+  })
+  
+  const order7 = await prisma.order.create({
+    data: {
+      customerId: createdCustomers[6].id,
+      status: OrderStatus.PAID,
+      totalAmount: 410,
+    },
+  })
+  
+  const order8 = await prisma.order.create({
+    data: {
+      customerId: createdCustomers[7].id,
+      status: OrderStatus.COMPLETED,
+      totalAmount: 199,
+    },
   })
 
   await prisma.orderItem.createMany({
@@ -89,6 +129,11 @@ async function main() {
       { orderId: order2.id, productId: createdProducts[1].id, quantity: 1, price: 125 },
       { orderId: order3.id, productId: createdProducts[2].id, quantity: 2, price: 280 },
       { orderId: order4.id, productId: createdProducts[3].id, quantity: 1, price: 89 },
+  
+      { orderId: order5.id, productId: createdProducts[0].id, quantity: 1, price: 340 },
+      { orderId: order6.id, productId: createdProducts[1].id, quantity: 1, price: 75 },
+      { orderId: order7.id, productId: createdProducts[2].id, quantity: 2, price: 205 },
+      { orderId: order8.id, productId: createdProducts[3].id, quantity: 1, price: 199 },
     ],
   })
 
@@ -96,7 +141,7 @@ async function main() {
   console.log({
     customersCount: customers.count,
     productsCount: createdProducts.length,
-    ordersCount: 4,
+    ordersCount: 8
   })
 }
 

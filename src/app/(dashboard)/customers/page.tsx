@@ -13,7 +13,7 @@ type CustomersPageProps = {
 async function getCustomers(page = 1, search = "") {
   const params = new URLSearchParams({
     page: String(page),
-    limit: "2",
+    limit: "5",
   })
 
   if (search) {
