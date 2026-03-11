@@ -9,6 +9,7 @@ import {
   ShoppingCart,
   Users,
 } from "lucide-react"
+import { OrderStatusBadge } from "@/components/dashboard/order-status-badge"
 
 export default async function DashboardPage() {
   const [revenueResult, totalOrders, totalCustomers, totalProducts, recentOrders] =
@@ -144,7 +145,9 @@ export default async function DashboardPage() {
                       <td className="px-4 py-3">
                         ${order.totalAmount.toFixed(2)}
                       </td>
-                      <td className="px-4 py-3">{order.status}</td>
+                      <td className="px-4 py-3">
+                        <OrderStatusBadge status={order.status} />
+                      </td>
                     </tr>
                   ))}
                 </tbody>
