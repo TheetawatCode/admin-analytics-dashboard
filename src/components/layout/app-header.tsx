@@ -7,9 +7,12 @@ export function AppHeader() {
     <header className="flex h-16 items-center justify-between border-b bg-background px-4 lg:px-6">
       <div className="flex w-full max-w-md items-center gap-2">
         <Search className="h-4 w-4 text-muted-foreground" />
+
         <Input
-          placeholder="Search..."
-          className="border-0 bg-muted shadow-none focus-visible:ring-1"
+          placeholder="Search customers, orders... (coming soon)"
+          className="opacity-70 cursor-not-allowed"
+          aria-label="Global search (coming soon)"
+          disabled
         />
       </div>
 
