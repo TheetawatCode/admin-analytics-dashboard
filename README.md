@@ -1,4 +1,10 @@
-# Admin Analytics Dashboard
+# Admin Analytics Dashboard 
+![Next.js](https://img.shields.io/badge/Next.js-14-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-blue)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-blue)
+![Prisma](https://img.shields.io/badge/Prisma-ORM-green)
+![License](https://img.shields.io/badge/license-MIT-lightgrey)
+![Status](https://img.shields.io/badge/status-portfolio_project-blue)
 
 A modern **fullstack admin dashboard** built with **Next.js, TypeScript, Prisma, and PostgreSQL** for monitoring key business metrics such as revenue, orders, customers, and products.
 
