@@ -5,8 +5,8 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
 
-    const page = Number(searchParams.get("page") ?? "1")
-    const limit = Number(searchParams.get("limit") ?? "10")
+    const page = Math.max(1, Number(searchParams.get("page") ?? "1"))
+    const limit = Math.max(1, Number(searchParams.get("limit") ?? "10"))
     const search = searchParams.get("search") ?? ""
 
     const data = await getCustomers({

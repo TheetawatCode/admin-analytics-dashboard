@@ -34,7 +34,7 @@ async function getOrders(page = 1, search = "") {
 
 export default async function OrdersPage({ searchParams }: OrdersPageProps) {
   const params = await searchParams
-  const currentPage = Number(params.page ?? "1")
+  const currentPage = Math.max(1, Number(params.page ?? "1"))
   const search = params.search ?? ""
 
   const response = await getOrders(currentPage, search)
@@ -76,7 +76,13 @@ export default async function OrdersPage({ searchParams }: OrdersPageProps) {
             </Button>
           </form>
 
-          <table className="w-full text-sm">
+          <table className="w-full table-fixed text-sm">
+            <colgroup>
+              <col className="w-[22%]" />
+              <col className="w-[28%]" />
+              <col className="w-[20%]" />
+              <col className="w-[20%]" />
+            </colgroup>
             <thead className="border-b text-left text-muted-foreground">
               <tr>
                 <th className="px-4 py-3">Order ID</th>
@@ -111,25 +117,35 @@ export default async function OrdersPage({ searchParams }: OrdersPageProps) {
           </table>
 
           <div className="flex items-center justify-end gap-2 pt-2">
-            <Button asChild variant="outline" disabled={!hasPreviousPage}>
-              <Link
-                href={`/orders?page=${currentPage - 1}${
-                  search ? `&search=${encodeURIComponent(search)}` : ""
-                }`}
-              >
+            {hasPreviousPage ? (
+              <Button asChild variant="outline">
+                <Link
+                  href={`/orders?page=${currentPage - 1}${search ? `&search=${encodeURIComponent(search)}` : ""
+                    }`}
+                >
+                  Previous
+                </Link>
+              </Button>
+            ) : (
+              <Button variant="outline" disabled>
                 Previous
-              </Link>
-            </Button>
+              </Button>
+            )}
 
-            <Button asChild variant="outline" disabled={!hasNextPage}>
-              <Link
-                href={`/orders?page=${currentPage + 1}${
-                  search ? `&search=${encodeURIComponent(search)}` : ""
-                }`}
-              >
+            {hasNextPage ? (
+              <Button asChild variant="outline">
+                <Link
+                  href={`/orders?page=${currentPage + 1}${search ? `&search=${encodeURIComponent(search)}` : ""
+                    }`}
+                >
+                  Next
+                </Link>
+              </Button>
+            ) : (
+              <Button variant="outline" disabled>
                 Next
-              </Link>
-            </Button>
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>

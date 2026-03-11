@@ -38,7 +38,7 @@ export default async function CustomersPage({
   searchParams,
 }: CustomersPageProps) {
   const params = await searchParams
-  const currentPage = Number(params.page ?? "1")
+  const currentPage = Math.max(1, Number(params.page ?? "1"))
   const search = params.search ?? ""
 
   const response = await getCustomers(currentPage, search)
@@ -77,7 +77,14 @@ export default async function CustomersPage({
             </Button>
           </form>
 
-          <table className="w-full text-sm">
+          <table className="w-full table-fixed text-sm">
+            <colgroup>
+              <col className="w-[22%]" />
+              <col className="w-[38%]" />
+              <col className="w-[12%]" />
+              <col className="w-[18%]" />
+            </colgroup>
+
             <thead className="border-b text-left text-muted-foreground">
               <tr>
                 <th className="px-4 py-3">Customer</th>
@@ -94,7 +101,7 @@ export default async function CustomersPage({
                   className="border-b transition-colors hover:bg-muted/40 last:border-0"
                 >
                   <td className="px-4 py-3 font-medium">{customer.name}</td>
-                  <td className="px-4 py-3">{customer.email}</td>
+                  <td className="truncate px-4 py-3">{customer.email}</td>
                   <td className="px-4 py-3">{customer.ordersCount}</td>
                   <td className="px-4 py-3">
                     {new Date(customer.createdAt).toLocaleDateString()}
@@ -105,25 +112,35 @@ export default async function CustomersPage({
           </table>
 
           <div className="flex items-center justify-end gap-2 pt-2">
-            <Button asChild variant="outline" disabled={!hasPreviousPage}>
-              <Link
-                href={`/customers?page=${currentPage - 1}${
-                  search ? `&search=${encodeURIComponent(search)}` : ""
-                }`}
-              >
+            {hasPreviousPage ? (
+              <Button asChild variant="outline">
+                <Link
+                  href={`/customers?page=${currentPage - 1}${search ? `&search=${encodeURIComponent(search)}` : ""
+                    }`}
+                >
+                  Previous
+                </Link>
+              </Button>
+            ) : (
+              <Button variant="outline" disabled>
                 Previous
-              </Link>
-            </Button>
+              </Button>
+            )}
 
-            <Button asChild variant="outline" disabled={!hasNextPage}>
-              <Link
-                href={`/customers?page=${currentPage + 1}${
-                  search ? `&search=${encodeURIComponent(search)}` : ""
-                }`}
-              >
+            {hasNextPage ? (
+              <Button asChild variant="outline">
+                <Link
+                  href={`/customers?page=${currentPage + 1}${search ? `&search=${encodeURIComponent(search)}` : ""
+                    }`}
+                >
+                  Next
+                </Link>
+              </Button>
+            ) : (
+              <Button variant="outline" disabled>
                 Next
-              </Link>
-            </Button>
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>
