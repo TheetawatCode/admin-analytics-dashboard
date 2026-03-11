@@ -1,37 +1,37 @@
 # Admin Analytics Dashboard
 
-A modern fullstack admin dashboard built with **Next.js, TypeScript, Prisma, and PostgreSQL** for monitoring business metrics such as revenue, orders, customers, and products.
+A modern **fullstack admin dashboard** built with **Next.js, TypeScript, Prisma, and PostgreSQL** for monitoring key business metrics such as revenue, orders, customers, and products.
 
-This project demonstrates building a scalable dashboard interface with a relational database, RESTful APIs, and reusable UI components.
+This project demonstrates how to design and implement a **scalable dashboard architecture** with a relational database, RESTful APIs, and reusable UI components suitable for real-world business applications.
 
 ---
 
-## 🚀 Live Demo
-(Deploy URL here after deployment)
+# 🚀 Live Demo
 
-Example:
 https://admin-analytics-dashboard.vercel.app
 
----
-
-## 🧠 Project Overview
-
-The Admin Analytics Dashboard provides an overview of key business metrics and management interfaces for customers and orders.
-
-The project focuses on:
-
-- Fullstack architecture with **Next.js App Router**
-- **Relational database modeling** using PostgreSQL
-- **Prisma ORM** for type-safe database access
-- Clean and reusable **UI component structure**
-- Pagination and data querying
-- Dashboard analytics visualization
+*(Update this link after deployment)*
 
 ---
 
-## 🛠 Tech Stack
+# 🧠 Project Overview
 
-Frontend
+The **Admin Analytics Dashboard** provides a centralized interface for monitoring and managing business data. It focuses on building a scalable fullstack architecture using modern web technologies.
+
+Key objectives of this project include:
+
+- Implementing a **fullstack architecture** with Next.js App Router
+- Designing a **relational database schema** with PostgreSQL
+- Using **Prisma ORM** for type-safe database operations
+- Creating **reusable UI components** for maintainable frontend development
+- Implementing **pagination and efficient data queries**
+- Building a clean and responsive **analytics dashboard interface**
+
+---
+
+# 🛠 Tech Stack
+
+### Frontend
 
 - Next.js 14 (App Router)
 - TypeScript
@@ -39,13 +39,13 @@ Frontend
 - shadcn/ui
 - Lucide Icons
 
-Backend
+### Backend
 
 - Next.js API Routes
 - Prisma ORM
 - PostgreSQL
 
-Tooling
+### Tooling
 
 - pnpm
 - ESLint
@@ -53,9 +53,9 @@ Tooling
 
 ---
 
-## ✨ Features
+# ✨ Features
 
-### Dashboard Overview
+## Dashboard Overview
 
 - Business KPI cards
   - Total Revenue
@@ -66,29 +66,37 @@ Tooling
 - Sales summary metrics
 - Recent orders activity table
 
-### Customers Management
+---
 
-- Customer list page
+## Customers Management
+
+- Customer listing page
 - Pagination support
 - Order count per customer
 - Server-side database queries
 
-### Orders Management
+---
+
+## Orders Management
 
 - Orders table
 - Status indicators (Paid / Pending / Completed)
-- Pagination
+- Pagination support
 - Order amount tracking
 
-### Products Module
+---
 
-A **placeholder module** prepared for future expansion including:
+## Products Module
+
+A **placeholder module** prepared for future expansion, including:
 
 - Product catalog
 - Inventory management
 - Product analytics
 
-### UI/UX
+---
+
+## UI / UX
 
 - Responsive admin layout
 - Sidebar navigation
@@ -97,27 +105,29 @@ A **placeholder module** prepared for future expansion including:
 
 ---
 
-## 🗄 Database Schema
+# 🗄 Database Schema
 
-The application uses a relational schema with the following core entities:
+The application uses a **relational database schema** with the following core entities:
 
-Customer  
-↓  
-Order  
-↓  
-OrderItem  
-↓  
+```
+Customer
+   ↓
+Order
+   ↓
+OrderItem
+   ↓
 Product
+```
 
-Example relationships:
+Relationship overview:
 
-- A **Customer** can have multiple Orders
+- A **Customer** can create multiple Orders
 - An **Order** contains multiple OrderItems
-- Each **OrderItem** references a Product
+- Each **OrderItem** references a specific Product
 
 ---
 
-## 📸 Screenshots
+# 📸 Screenshots
 
 ### Dashboard
 
@@ -137,93 +147,115 @@ Example relationships:
 
 ---
 
-## 📂 Project Structure
+# 📂 Project Structure
+
+```
 src
 ├─ app
-│ ├─ dashboard
-│ ├─ customers
-│ ├─ orders
-│ └─ products
+│  ├─ dashboard
+│  ├─ customers
+│  ├─ orders
+│  └─ products
 │
 ├─ components
-│ ├─ layout
-│ ├─ dashboard
-│ └─ ui
+│  ├─ layout
+│  ├─ dashboard
+│  └─ ui
 │
 ├─ lib
-│ └─ prisma
+│  └─ prisma
 │
 └─ generated
-└─ prisma 
+   └─ prisma
+```
 
 ---
 
-## ⚙️ Getting Started
+# ⚙️ Getting Started
 
-### 1 Install dependencies
+## 1 Install dependencies
 
 ```bash
-pnpm install 
+pnpm install
+```
 
-2 Setup environment variables
+---
 
-Create .env
+## 2 Setup environment variables
 
-DATABASE_URL="postgresql://user:password@localhost:5432/admin_dashboard" 
+Create a `.env` file:
 
-3 Generate Prisma Client 
+```
+DATABASE_URL="postgresql://user:password@localhost:5432/admin_dashboard"
+```
 
-pnpm prisma generate 
+---
 
-4 Run database migration 
+## 3 Generate Prisma Client
 
-pnpm prisma migrate dev 
+```bash
+pnpm prisma generate
+```
 
-5 Seed the database 
+---
 
-pnpm seed 
+## 4 Run database migration
+
+```bash
+pnpm prisma migrate dev
+```
+
+---
+
+## 5 Seed the database
+
+```bash
+pnpm seed
+```
 
 This will generate sample data including:
 
-12 customers
+- 12 customers
+- 4 products
+- 8 orders
 
-4 products
+---
 
-8 orders 
+## 6 Run the development server
 
-6 Run the development server
-pnpm dev 
+```bash
+pnpm dev
+```
 
 Open:
 
-http://localhost:3000 
+```
+http://localhost:3000
+```
 
-📈 Future Improvements
+---
 
-Possible future features include:
+# 📈 Future Improvements
 
-Global search across customers and orders
+Potential future enhancements:
 
-Product management module
+- Global search across customers and orders
+- Product management module
+- Order detail page
+- Authentication and role-based access control
+- Advanced analytics dashboard
 
-Order detail page
+---
 
-Authentication and role-based access
+# 👨‍💻 Author
 
-Advanced analytics dashboard
-
-👨‍💻 Author
-
-Theetawat Premsawat
+**Theetawat Premsawat**
 
 Frontend-Focused Full-Stack Developer
 
 Tech focus:
 
-React
-
-Next.js
-
-TypeScript
-
-Fullstack web applications
+- React
+- Next.js
+- TypeScript
+- Fullstack Web Applications
