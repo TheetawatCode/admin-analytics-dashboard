@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { RevenueChart } from "@/components/dashboard/revenue-chart"
 import { StatCard } from "@/components/dashboard/stat-card"
 import { OrderStatusBadge } from "@/components/dashboard/order-status-badge"
@@ -58,7 +59,7 @@ export default async function DashboardPage() {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Dashboard Overview</h1>
         <p className="text-sm text-muted-foreground">
-          Monitor business performance, orders, customers, and products.
+          Overview of key business metrics including revenue, orders, customers, and product activity.
         </p>
       </div>
 
@@ -146,6 +147,16 @@ export default async function DashboardPage() {
                 </tbody>
               </table>
             </div>
+
+            <div className="mt-4 flex justify-end">
+              <Link
+                href="/orders"
+                className="text-sm font-medium text-foreground transition-colors hover:text-muted-foreground"
+              >
+                View All Orders →
+              </Link>
+            </div>
+
           </CardContent>
         </Card>
       </section>

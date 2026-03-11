@@ -12,7 +12,7 @@ export async function getDashboardStatsFromDb() {
       prisma.customer.count(),
       prisma.product.count(),
       prisma.order.findMany({
-        take: 5,
+        take: 6,
         orderBy: {
           createdAt: "desc",
         },
